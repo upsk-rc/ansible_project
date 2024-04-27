@@ -1,0 +1,34 @@
+---
+- name: Prepare Wordpress host directory
+  ansible.builtin.file:
+    path: "/var/www/{{ wp_host }}"
+    state: directory
+    
+- name: WordPress download and unpackage
+  ansible.builtin.unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: "/var/www/{{ wp_host }}"
+    remote_src: yes
+
+- name: Prepare Wordpress host directory
+  ansible.builtin.file:
+    path: "/var/www/{{ wp_host }}"
+    state: directory
+    recurse: true
+    owner: www-data
+    group: www-data
+    mode: 0755
+
+- name: Set up wp-config in the Disaster Recovery environment
+  ansible.builtin.template:
+    src: "roles/wordpress_role/templates/wp-config.php.j2"
+    dest: "/var/www/{{ wp_host }}/wordpress/wp-config.php"
+  
+- name: Prepare Wordpress host directory
+  ansible.builtin.file:
+    path: "/var/www/{{ wp_host }}"
+    state: directory
+    recurse: true
+    owner: www-data
+    group: www-data
+    mode: 0755

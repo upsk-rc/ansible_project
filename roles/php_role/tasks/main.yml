@@ -1,0 +1,28 @@
+---
+- name: PHP and PHP related packages installation
+  become: true
+  ansible.builtin.apt:
+    name: 
+      - php
+      - php-mysql
+    state: present
+  
+- name: PHP modules installation
+  become: true
+  ansible.builtin.apt:
+    name:
+      - php-curl
+      - php-gd
+      - php-mbstring
+      - php-xml
+      - php-xmlrpc
+      - php-soap
+      - php-intl
+      - php-zip
+    state: present
+
+- name: PHP configuration
+  become: true
+  ansible.builtin.copy:
+    src: "{{ default_file }}"
+    dest: /var/www/html/info.php

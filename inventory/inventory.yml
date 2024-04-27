@@ -1,0 +1,16 @@
+linux_hosts:
+  hosts:
+    linux_webserver:
+      ansible_host: 192.168.1.10
+    linux_dbserver:
+      ansible_host: 192.168.1.12
+
+windows_hosts:
+  hosts:
+    windows:
+      ansible_host: 192.168.1.11
+
+disasterrecovery:
+  hosts:
+    linux_webserver:
+      

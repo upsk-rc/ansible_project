@@ -1,0 +1,34 @@
+---
+- name: Print variables for debbuging
+  ansible.builtin.debug:
+    msg: "{{ host_environment }} and {{ ip_address }}"
+
+- name: Apache2 and Apache2 related packages installation
+  become: true
+  ansible.builtin.apt:
+    name: 
+      - apache2
+      - libapache2-mod-php
+    state: present
+
+- name: Start Apache2 service
+  become: true
+  ansible.builtin.service:
+    name: apache2
+    state: started
+  
+- name: Enable Apache2 service (start at boot)
+  become: true
+  ansible.builtin.service:
+    name: apache2
+    enabled: yes
+
+#- name: Run smoke test
+#  ansible.builtin.uri:
+#    url: http://dpr.example.com
+#    return_content: yes
+#  register: smoke_test
+#
+#- name: Debug smoke test
+#  ansible.builtin.debug:
+#    msg: "{{ smoke_test.content }}"
