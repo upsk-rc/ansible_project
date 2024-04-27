@@ -1,0 +1,15 @@
+- name: Find environment via hostname
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Find environment via hostname
+      ansible.builtin.set_fact:
+        host_environment: disasterrecovery
+        mysql_db_host: 192.168.1.12
+      when: lookup('pipe','hostname')=="control-node"
+
+    - name: Find environment via hostname
+      ansible.builtin.set_fact:
+        host_environment: production
+        mysql_db_host: 192.168.2.12
+      when: lookup('pipe','hostname')!="control-node"

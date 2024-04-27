@@ -1,9 +1,18 @@
 linux_hosts:
   hosts:
-    linux_webserver:
+    linux_webserver_dr:
       ansible_host: 192.168.1.10
-    linux_dbserver:
+    linux_dbserver_dr:
       ansible_host: 192.168.1.12
+    linux_webserver_prod:
+      ansible_host: 192.168.2.10
+
+webservers:
+  hosts:
+    linux_webserver_dr:
+      ansible_host: 192.168.1.10
+    linux_webserver_prod:
+      ansible_host: 192.168.2.10
 
 windows_hosts:
   hosts:
@@ -12,5 +21,8 @@ windows_hosts:
 
 disasterrecovery:
   hosts:
-    linux_webserver:
+    linux_webserver_dr:
       
+production:
+  hosts:
+    linux_webserver_prod:

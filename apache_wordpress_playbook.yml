@@ -1,42 +1,25 @@
 ---
-- name: Set context variables
-  hosts: all
-  tasks:
-    - name: Set variables for Disaster recovery environment
-      ansible.builtin.set_fact:
-        ip_address: 192.168.1.12
-        host_environment: disasterrecovery
-      when: ansible_default_ipv4.network == "192.168.1.0"
- 
-    - name: Set variables for Disaster recovery environment
-      ansible.builtin.set_fact:
-        ip_address: 192.168.2.12
-        host_environment: production
-      when: ansible_default_ipv4.network == "192.168.2.0"
+- name: Install and configure web server
+  import_playbook: find_environment_playbook.yml
 
-    - name: Print variables for debbuging
-      ansible.builtin.debug:
-        msg: "{{ host_environment }} and {{ ip_address }}"
-
-    - name: Print variables for debbuging
-      ansible.builtin.debug:
-        var: host_environment
-
-- name: Apache2 installation and configuration 
-  hosts: disasterrecovery
+- name: Apache2 installation and configuration in the Disaster Recovery environnment
+  hosts: webservers:&{{ hostvars.localhost.host_environment }}
   become: true
   roles: 
     - role: apache_role
 
-- name: PHP installation and configuration 
-  hosts: linux_webserver
+
+- name: PHP installation and configuration in the Disaster Recovery environnment
+  hosts: webservers:&{{ hostvars.localhost.host_environment }}
   become: true
   roles: 
     - role: php_role
-
-- name: Wordpress installation and configuration 
-  hosts: linux_webserver
+            
+- name: Wordpress installation and configuration in the Disaster Recovery environnment
+  hosts: webservers:&{{ hostvars.localhost.host_environment }}
   become: true
+  vars: 
+    mysql_db_host: hostvars.localhost.db_host
   roles: 
     - role: wordpress_role
-  
+
