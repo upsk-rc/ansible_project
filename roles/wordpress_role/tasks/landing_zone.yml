@@ -16,7 +16,7 @@
     state: absent
   notify: Restart Apache2
   
-- name: Enable Apache2 default site 
+- name: Enable Wordpress site 
   ansible.builtin.file:
     src: /etc/apache2/sites-available/{{ wp_host }}.conf
     dest: /etc/apache2/sites-enabled/{{ wp_host }}.conf

@@ -1,5 +1,5 @@
 ---
-- name: Prepare Wordpress host directory
+- name: Prepare Wordpress directory
   ansible.builtin.file:
     path: "/var/www/{{ wp_host }}"
     state: directory
@@ -9,22 +9,16 @@
     src: https://wordpress.org/latest.tar.gz
     dest: "/var/www/{{ wp_host }}"
     remote_src: yes
+    extra_opts:
+    - --strip-components=1
 
-- name: Prepare Wordpress host directory
-  ansible.builtin.file:
-    path: "/var/www/{{ wp_host }}"
-    state: directory
-    recurse: true
-    owner: www-data
-    group: www-data
-    mode: 0755
-
-- name: Set up wp-config in the Disaster Recovery environment
+- name: Set up wp-config 
   ansible.builtin.template:
     src: "roles/wordpress_role/templates/wp-config.php.j2"
-    dest: "/var/www/{{ wp_host }}/wordpress/wp-config.php"
+    dest: "/var/www/{{ wp_host }}/wp-config.php"
+  notify: Restart Apache2  
   
-- name: Prepare Wordpress host directory
+- name: Change ownership and permissions for Wordpress directory
   ansible.builtin.file:
     path: "/var/www/{{ wp_host }}"
     state: directory
@@ -32,3 +26,4 @@
     owner: www-data
     group: www-data
     mode: 0755
+
