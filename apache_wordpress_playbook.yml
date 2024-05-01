@@ -17,7 +17,6 @@
             
 - name: Wordpress installation and configuration in the {{ hostvars.localhost.host_environment }} environnment
   hosts: webservers:&{{ hostvars.localhost.host_environment }}
-  become: true
   vars: 
     mysql_db_host: "{{ hostvars.localhost.mysql_db_host }}"
   roles: 
