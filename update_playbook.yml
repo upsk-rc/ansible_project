@@ -1,6 +1,9 @@
 ---
+- name: Identify environment
+  import_playbook: find_environment_playbook.yml
+
 - name: Patching and Updating all systems
-  hosts: all
+  hosts: {{ hostvars.localhost.host_environment }}
   tasks:
     - name: Update Debian-based systems databases
       become: yes

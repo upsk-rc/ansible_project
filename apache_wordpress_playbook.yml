@@ -1,24 +1,25 @@
 ---
-- name: Install and configure web server
+- name: Identify environment
   import_playbook: find_environment_playbook.yml
 
 - name: Apache2 installation and configuration in the {{ hostvars.localhost.host_environment }} environnment
-  hosts: webservers:&{{ hostvars.localhost.host_environment }}
+  hosts: web-servers:&{{ hostvars.localhost.host_environment }}
   become: true
   roles: 
     - role: apache_role
 
 
 - name: PHP installation and configuration in the {{ hostvars.localhost.host_environment }} environnment
-  hosts: webservers:&{{ hostvars.localhost.host_environment }}
+  hosts: web-servers:&{{ hostvars.localhost.host_environment }}
   become: true
   roles: 
     - role: php_role
             
 - name: Wordpress installation and configuration in the {{ hostvars.localhost.host_environment }} environnment
-  hosts: webservers:&{{ hostvars.localhost.host_environment }}
+  hosts: web-servers:&{{ hostvars.localhost.host_environment }}
   vars: 
     mysql_db_host: "{{ hostvars.localhost.mysql_db_host }}"
+    mysql_db: "{{ hostvars.localhost.mysql_db_host }}"
   roles: 
     - role: wordpress_role
 
