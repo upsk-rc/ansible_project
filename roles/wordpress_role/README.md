@@ -1,38 +1,48 @@
-Role Name
+wordpress_role
 =========
 
-A brief description of the role goes here.
+This Ansible role is designed to automate the process of preparing a server for a WordPress installation, as well as downloading, installing, and configuring WordPress on Linux systems. The role takes care of preparing the necessary directories, disabling the Apache2 default site, and installing and enabling the WordPress site.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Ansible 2.9 or later.
+- SSH access to the target systems.
+- Sudo privileges on the target systems for the executing user.
+- Apache2 insatlled.
+- PHP installed.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- wp_host: wordpress site name and domain (e.g. dpr.example.com).
+- mysql_root_password: mysql password for the root user.
+- mysql_db: name of the wordpress mysql database.
+- mysql_user: user for the wordpress mysql database.
+- mysql_user_password: mysql password for the mysql_user user.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Depends on apache_role and php_role.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+- name: Wordpress installation and configuration
+  hosts: web-server
+  vars: 
+    mysql_db_host: example.host
+    mysql_db: example.database
+  roles: 
+    - role: wordpress_role
 
 License
 -------
 
-BSD
+This project is licensed under the MIT License.
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Role created in April of 2024.
