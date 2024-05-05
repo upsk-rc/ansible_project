@@ -2,27 +2,27 @@
 - name: Identify environment
   import_playbook: find_environment_playbook.yml
 
-- name: Patching and Updating all systems
-  hosts: {{ hostvars.localhost.host_environment }}
+- name: Patching and Updating Linux systems
+  hosts: linux-os:&{{ hostvars.localhost.host_environment }}
   tasks:
     - name: Update Debian-based systems databases
       become: yes
       ansible.builtin.apt:
         update_cache: true
         upgrade: "yes"
-      when: ansible_os_family == 'Debian'
     
+- name: Patching and Updating Windows systems
+  hosts: windows-os:&{{ hostvars.localhost.host_environment }}
+  tasks:
     - name: Update Windows systems databases
       ansible.windows.win_updates:
         category_names: "*"
         state: searched
       register: win_updates_results
-      when: ansible_os_family == 'Windows'
 
     - name: Reboot Windows if necessary
       ansible.windows.win_reboot:
       when: 
-        - ansible_os_family == 'Windows'
         - win_updates_results.reboot_required == true
 
 
@@ -32,7 +32,6 @@
         state: installed
       register: win_upgrades_results
       when: 
-        - ansible_os_family == 'Windows'
         - win_updates_results.updates | length > 0
         
 
